@@ -1,6 +1,6 @@
 import pandas as pd
 import plotly.express as px
-import dash
+from dash import dash, dcc, html, Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
@@ -18,10 +18,23 @@ fig = px.bar(df, x=g_by.groups.keys(), y=values)
 ###################################### Graph number 2
 
 g_by_release = df.groupby(['release_year'])
- 
-values_years = [count for count in g_by_release.size()]
 
-fig2 =  px.bar(df, x=g_by_release.groups.keys(), y=values_years)
+@app.callback(
+    Output('graph2', 'figure'),
+    Input('start_y', 'value'),
+    Input('end_y', 'value'))
+def update_figure(start_year, end_year):
+
+    filtered_df = df[ (start_year <= df['release_year']) & (df['release_year'] <= end_year)]
+
+    g_by_release = filtered_df.groupby(['release_year'])
+    
+    values_years = [count for count in g_by_release.size()]
+
+    fig =  px.bar(filtered_df, x=list(g_by_release.groups.keys()), y=values_years)
+    fig.update_layout(transition_duration=500)
+
+    return fig
 
 ###################################### Graph number 3
 
@@ -61,11 +74,21 @@ app.layout = html.Div(children=[
         id='example-graph',
         figure=fig
     ),
-    dcc.Graph(
-        id='example-u',
-        figure=fig2
+    html.Div([
+        "Starting Year: ",
+        dcc.Dropdown(list(g_by_release.groups.keys()), 1928, id='start_y')
+    ],
+    style={"width": "25%"},
     ),
-
+    html.Div([
+        "End Year: ",
+        dcc.Dropdown(list(g_by_release.groups.keys()), 2021, id='end_y')
+    ],
+    style={"width": "25%"},
+    ),
+    dcc.Graph(
+        id='graph2'
+    ),
     dcc.Graph(
         id='example-op',
         figure=fig3
