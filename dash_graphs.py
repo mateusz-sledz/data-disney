@@ -46,7 +46,6 @@ def update_figure(start_year, end_year):
 
     return fig
 
-
 ###################################### Graph number 3
 
 g_by_rating = df.groupby(['rating']).size().reset_index(name='count')
@@ -68,8 +67,9 @@ results = results.sort_values('time')
 fig4 = px.histogram(results, x='time', labels={
     'x': 'length in minutes',
     'y': 'total count'
-}, nbins=50, width=800, height=600, title='Movies duration distribution')
+}, nbins=50, width=800, height=600, title='Movies duration distribution', color=results['time'])
 fig4.update_layout(title_font_family='Lato')
+fig4.update_traces(hovertemplate='duration (min): %{x}<br>count: %{y}<extra></extra>')
 
 ###################################### Graph number 5
 
@@ -83,8 +83,10 @@ results = results.sort_values('seasons')
 fig5 = px.histogram(results, x='seasons', labels={
     'x': 'number of seasons',
     'y': 'total count'
-}, width=800, height=600, title=' TV Shows duration distribution (seasons)')
+}, width=800, height=600, title=' TV Shows duration distribution (seasons)', color=results['seasons'])
 fig5.update_layout(title_font_family='Lato')
+fig5.update_traces(hovertemplate='duration (number of seasons): %{x} <br>count: %{y}<extra></extra>')
+
 
 ###### App layout
 
