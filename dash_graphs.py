@@ -36,7 +36,7 @@ def update_figure(start_year, end_year):
 
     values_years = [count for count in g_by_release.size()]
 
-    fig = px.bar(filtered_df, x=list(g_by_release.groups.keys()), y=values_years, title='Content release date', labels={
+    fig = px.bar(filtered_df, x=list(g_by_release.groups.keys()), y=values_years, labels={
         'x': 'year',
         'y': 'total count'
     }, height=600, color=g_by_release.groups.keys())
@@ -104,13 +104,13 @@ app.layout = html.Div(style={'fontFamily': 'Lato', 'margin': '12px 36px'}, child
         "justifyContent": "space-around",
     }),
     html.Div([
-        "Distribution of content release date in Disney"
+        "Distribution of content release date in Disney+"
     ], style={
         "fontWeight": "600",
         "textAlign": "center",
         "width": "100%",
         "fontSize": 20,
-        "marginBottom": 12,
+        "marginBottom": 8,
     }),
     html.Div([
         html.Div([
